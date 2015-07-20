@@ -1501,7 +1501,11 @@ int dump_add_packet( unsigned char *h80211, int caplen, struct rx_info *ri, int 
                 memcpy(st_new, st_cur, sizeof(struct ST_info));
                 st_new->next = st_cur;
                 st_new->prev = st_prv;
-                st_prv->next = st_new;
+                
+                if(st_prv != NULL){
+                    st_prv->next = st_new;
+                }
+
                 st_cur->prev = st_new;
                 st_cur = st_new;
             }
