@@ -1494,7 +1494,8 @@ int dump_add_packet( unsigned char *h80211, int caplen, struct rx_info *ri, int 
         if( ! memcmp( st_cur->stmac, stmac, 6 ) ){  
             
             //add new client after timeout
-            if( ! (G.is_forgetful && (time(NULL) - st_cur->tlast >= G.forget_to_sec))){
+            if( (G.is_forgetful && (time(NULL) - st_cur->tlast >= G.forget_to_sec))){
+                printf("FORGOT");
                 /* do all insertions towards the head so that the 
                  * newest entry for a MAC will always come first */
                 struct ST_info *st_new = (struct ST_info *) malloc(sizeof(struct ST_info));
