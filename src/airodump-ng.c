@@ -1495,7 +1495,7 @@ int dump_add_packet( unsigned char *h80211, int caplen, struct rx_info *ri, int 
             
             //add new client after timeout
             if( (G.is_forgetful && (time(NULL) - st_cur->tlast >= G.forget_to_sec))){
-                printf("FORGOT");
+               
                 /* do all insertions towards the head so that the 
                  * newest entry for a MAC will always come first */
                 struct ST_info *st_new = (struct ST_info *) malloc(sizeof(struct ST_info));
@@ -1503,6 +1503,10 @@ int dump_add_packet( unsigned char *h80211, int caplen, struct rx_info *ri, int 
                 st_new->next = st_cur;
                 st_new->prev = st_prv;
                 
+                //set timing up correctly so that it doesn't always have the same start time.
+                st_new -> tinit = time(NULL);
+                st_new -> tlast = time(NULL);
+
                 if(st_prv != NULL){
                     st_prv->next = st_new;
                 }
@@ -7010,7 +7014,7 @@ usage:
             /* update the text output files */
 
             tt1 = time( NULL );
-            if (G. output_format_csv)  dump_write_csv();
+            if (G.output_format_csv)  dump_write_csv();
             if (G.output_format_kismet_csv) dump_write_kismet_csv();
             if (G.output_format_kismet_netxml) dump_write_kismet_netxml();
         }
