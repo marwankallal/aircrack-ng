@@ -826,6 +826,8 @@ int dump_initialize( char *prefix, int ivs_only )
 	   + longest extension ("kismet.netxml") + terminating 0. */
 	ofn_len = strlen(prefix) + 1 + 2 + 1 + 13 + 1;
 	ofn = (char *)calloc(1, ofn_len);
+    
+    char *ap_ofn = (char *)calloc(1, ofn_len + 2);
 
     G.f_index = 1;
 
@@ -861,7 +863,9 @@ int dump_initialize( char *prefix, int ivs_only )
 		snprintf( ofn,  ofn_len, "%s-%02d.%s",
 				  prefix, G.f_index, AIRODUMP_NG_CSV_EXT );
 
-		if( ( G.f_txt = fopen( ofn, "ab+" ) ) == NULL || (G.f_ap_txt = fopen("AP_DATA", "ab+")) == NULL)
+        snprintf(ap_ofn, ofn_len, "%s-%02d-AP.%s", prefix, G.f_index, AIRODUMP_NG_CSV_EXT);
+
+		if( ( G.f_txt = fopen( ofn, "ab+" ) ) == NULL || (G.f_ap_txt = fopen(ap_ofn, "ab+")) == NULL)
 		{
 			perror( "fopen failed" );
 			fprintf( stderr, "Could not create \"%s\".\n", ofn );
