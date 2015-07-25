@@ -865,7 +865,7 @@ int dump_initialize( char *prefix, int ivs_only )
 
         snprintf(ap_ofn, ofn_len, "%s-%02d-AP.%s", prefix, G.f_index, AIRODUMP_NG_CSV_EXT);
 
-		if( ( G.f_txt = fopen( ofn, "ab+" ) ) == NULL || (G.f_ap_txt = fopen(ap_ofn, "ab+")) == NULL)
+		if( ( G.f_txt = fopen( ofn, "ab+" ) ) == NULL || (G.f_ap_txt = fopen(ap_ofn, "wb+")) == NULL)
 		{
 			perror( "fopen failed" );
 			fprintf( stderr, "Could not create \"%s\".\n", ofn );
@@ -1535,7 +1535,7 @@ int dump_add_packet( unsigned char *h80211, int caplen, struct rx_info *ri, int 
             perror( "malloc failed" );
             return( 1 );
         }
-
+        G.st_lst_sz++;
         /* if mac is listed as unknown, remove it */
         remove_namac(stmac);
 
@@ -3880,12 +3880,7 @@ int dump_write_csv( void )
 
         ap_cur = ap_cur->next;
     }
-
-    //TODO: MOVE HEADERS TO dump_initialize
-    fprintf( G.f_txt,
-        "\r\nStation MAC, First time seen, Last time seen, "
-        "Power, # packets, BSSID, Probed ESSIDs\r\n" );
-
+   
     st_cur = G.st_1st;
 
     while( st_cur != NULL )
@@ -3962,12 +3957,15 @@ int dump_write_csv( void )
 
     //FREE ST LIST
     st_cur = G.st_1st;
-    while(st_cur != NULL){
-        struct ST_info *free_st = st_cur;
-        st_cur = st_cur->next;
-        free(free_st);
+    if(G.st_lst_sz > MAX_LST_LEN){
+        while(st_cur != NULL){
+            struct ST_info *free_st = st_cur;
+            st_cur = st_cur->next;
+            free(free_st);
+        }
+        G.st_1st = NULL;
+        G.st_lst_sz = 0;
     }
-    G.st_1st = NULL;
 
     return 0;
 }
@@ -6258,7 +6256,6 @@ int main( int argc, char *argv[] )
 	G.manufList = NULL;
     
     G.st_lst_sz = 0;
-    G.ap_lst_sz = 0;
 	G.output_format_pcap = 1;
     G.output_format_csv = 1;
     G.output_format_kismet_csv = 1;
