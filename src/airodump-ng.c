@@ -870,7 +870,7 @@ int dump_initialize( char *prefix, int ivs_only )
 			return( 1 );
 		}
         ofn[ofn_len - 5] = 'a';
-        ofn[ofn_len - 4] = 'p';
+        ofn[ofn_len - 6] = 'p';
         if( (G.f_ap_txt = fopen(ofn, "ab+")) == NULL){
             perror( "fopen failed" );
 			fprintf( stderr, "Could not create \"%s\".\n", ofn );
