@@ -45,7 +45,7 @@ endif
 ifeq ($(OSNAME), cygwin)
 	COMMON_CFLAGS   += -DCYGWIN
 endif
-
+libnl=false
 ifeq ($(OSNAME), Linux)
 	ifneq ($(libnl), false)
 		NL3xFOUND := $(shell $(PKG_CONFIG) --atleast-version=3.2 libnl-3.0 && echo Y)
@@ -106,7 +106,7 @@ ifeq ($(subst TRUE,true,$(filter TRUE true,$(airpcap) $(AIRPCAP))),true)
 endif
 
 ifneq ($(origin CC),environment)
-	CC	= $(TOOL_PREFIX)gcc
+	CC	= /home/marwan/Documents/SDK/openwrt/staging_dir/toolchain-mips_r2_gcc-4.6-linaro_uClibc-0.9.33.2/bin/mips-openwrt-linux-gcc
 endif
 
 RANLIB		?= $(TOOL_PREFIX)ranlib
@@ -147,16 +147,16 @@ endif
 
 ifeq ($(GCC_OVER49), 0)
 	ifeq ($(GCC_OVER41), 1)
-		COMMON_CFLAGS += -fstack-protector
+		#COMMON_CFLAGS += -fstack-protector
 	endif
 endif
 
 ifeq ($(GCC_OVER49), 1)
-	COMMON_CFLAGS += -fstack-protector-strong
+	#COMMON_CFLAGS += -fstack-protector-strong
 endif
 
 ifeq ($(GCC_OVER45), 1)
-	CFLAGS		+= -Wno-unused-but-set-variable -Wno-array-bounds
+	#CFLAGS		+= -Wno-unused-but-set-variable -Wno-array-bounds
 endif
 
 ifeq ($(subst TRUE,true,$(filter TRUE true,$(duma) $(DUMA))),true)

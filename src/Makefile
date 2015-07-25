@@ -3,7 +3,7 @@ include $(AC_ROOT)/common.mak
 
 TEST_DIR	= $(AC_ROOT)/test
 
-CFLAGS		+= -Iinclude
+CFLAGS		+= -Iinclude -I/home/marwan/Documents/SDK/openwrt/staging_dir/target-mips_r2_uClibc-0.9.33.2/usr/include
 
 iCC             = $(shell find /opt/intel/cc/*/bin/icc)
 iCFLAGS         = -w -mcpu=pentiumpro -march=pentiumpro $(COMMON_CFLAGS)
@@ -142,7 +142,7 @@ aireplay-ng$(EXE): $(OBJS_AR) $(LIBOSD)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS_AR) -o $(@) $(LIBS) $(LIBSSL)
 
 airodump-ng$(EXE): $(OBJS_ADU) $(LIBOSD)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS_ADU) -o $(@) $(LIBS) $(LIBSSL) -lpthread $(LIBPCRE)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS_ADU) -o $(@) -L/home/marwan/Documents/SDK/openwrt/staging_dir/target-mips_r2_uClibc-0.9.33.2/usr/lib $(LIBS) $(LIBSSL) -lpthread $(LIBPCRE)
 
 airserv-ng$(EXE): $(OBJS_AS) $(LIBOSD)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS_AS) -o $(@) $(LIBS)

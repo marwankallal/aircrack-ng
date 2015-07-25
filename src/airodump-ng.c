@@ -862,13 +862,21 @@ int dump_initialize( char *prefix, int ivs_only )
 		snprintf( ofn,  ofn_len, "%s-%02d.%s",
 				  prefix, G.f_index, AIRODUMP_NG_CSV_EXT );
 
-		if( ( G.f_txt = fopen( ofn, "wb+" ) ) == NULL )
+		if( ( G.f_txt = fopen( ofn, "ab+" ) ) == NULL)
 		{
 			perror( "fopen failed" );
 			fprintf( stderr, "Could not create \"%s\".\n", ofn );
 			free( ofn );
 			return( 1 );
 		}
+        ofn[ofn_len - 5] = 'a';
+        ofn[ofn_len - 4] = 'p';
+        if( (G.f_ap_txt = fopen(ofn, "ab+")) == NULL){
+            perror( "fopen failed" );
+			fprintf( stderr, "Could not create \"%s\".\n", ofn );
+			free( ofn );
+			return( 1 );
+        }
 	}
 
     /* create the output Kismet CSV file */
@@ -6202,6 +6210,7 @@ int main( int argc, char *argv[] )
     G.f_cap        =  NULL;
     G.f_ivs        =  NULL;
     G.f_txt        =  NULL;
+    G.f_ap_txt     =  NULL;
     G.f_kis        =  NULL;
     G.f_kis_xml    =  NULL;
     G.f_gps        =  NULL;
@@ -6238,7 +6247,9 @@ int main( int argc, char *argv[] )
     G.detect_anomaly = 0;
     G.airodump_start_time = NULL;
 	G.manufList = NULL;
-
+    
+    G.st_lst_sz = 0;
+    G.ap_lst_sz = 0;
 	G.output_format_pcap = 1;
     G.output_format_csv = 1;
     G.output_format_kismet_csv = 1;

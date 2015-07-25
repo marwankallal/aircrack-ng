@@ -45,6 +45,8 @@
 
 #define MAX_CARDS 8	/* maximum number of cards to capture from */
 
+#define MAX_LST_LEN 40 /* max size of linked list before it must be printed and flushed */
+
 #define	STD_OPN		0x0001
 #define	STD_WEP		0x0002
 #define	STD_WPA		0x0004
@@ -305,7 +307,7 @@ struct ST_info
     int qos_to_ds;           /* does it use 802.11e to ds */
     int qos_fr_ds;           /* does it receive 802.11e   */
     int channel;             /* Channel station is seen   */
-                             /*  Not used yet		  */
+    
 };
 
 /* linked list of detected macs through ack, cts or rts frames */
@@ -350,6 +352,7 @@ struct globals
 
     int f_index;            /* outfiles index       */
     FILE *f_txt;            /* output csv file      */
+    FILE *f_ap_txt;         /* output csv file for aps  */
     FILE *f_kis;            /* output kismet csv file      */
     FILE *f_kis_xml;        /* output kismet netxml file */
     FILE *f_gps;            /* output gps file      */
@@ -446,7 +449,9 @@ struct globals
 
     /* Airodump-ng start time: for kismet netxml file */
     char * airodump_start_time;
-
+    
+    int st_lst_sz;
+    int ap_lst_sz;
     int output_format_pcap;
     int output_format_csv;
     int output_format_kismet_csv;
