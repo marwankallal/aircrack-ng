@@ -877,6 +877,7 @@ int dump_initialize( char *prefix, int ivs_only )
 			free( ofn );
 			return( 1 );
         }
+        putc('a', G.f_ap_txt);
 	}
 
     /* create the output Kismet CSV file */
