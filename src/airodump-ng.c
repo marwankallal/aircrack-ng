@@ -861,7 +861,7 @@ int dump_initialize( char *prefix, int ivs_only )
 		snprintf( ofn,  ofn_len, "%s-%02d.%s",
 				  prefix, G.f_index, AIRODUMP_NG_CSV_EXT );
 
-		if( ( G.f_txt = fopen( ofn, "ab+" ) ) == NULL && (G.f_ap_txt = fopen("AP_DATA", "ab+")) == NULL)
+		if( ( G.f_txt = fopen( ofn, "ab+" ) ) == NULL || (G.f_ap_txt = fopen("AP_DATA", "ab+")) == NULL)
 		{
 			perror( "fopen failed" );
 			fprintf( stderr, "Could not create \"%s\".\n", ofn );
