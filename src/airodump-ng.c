@@ -817,7 +817,7 @@ int dump_initialize( char *prefix, int ivs_only )
     char * ofn = NULL;
 
     
-    printf("%s", ofn);
+    return(1);
     /* If you only want to see what happening, send all data to /dev/null */
 
     if ( prefix == NULL || strlen( prefix ) == 0) {
