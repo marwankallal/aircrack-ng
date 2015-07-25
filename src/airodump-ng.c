@@ -7026,7 +7026,7 @@ usage:
             break;
         }
 
-        if( time( NULL ) - tt1 >= G.file_write_interval )
+        if( G.st_lst_sz > MAX_LST_LEN )
         {
             /* update the text output files */
 
