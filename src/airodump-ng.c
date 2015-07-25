@@ -3755,9 +3755,9 @@ int dump_write_csv( void )
     if (! G.record_data || !G.output_format_csv)
     	return 0;
 
-    fseek( G.f_txt, 0, SEEK_SET );
+    fseek( G.f_ap_txt, 0, SEEK_SET );
 
-    fprintf( G.f_txt,
+    fprintf( G.f_ap_txt,
         "\r\nBSSID, First time seen, Last time seen, channel, Speed, "
         "Privacy, Cipher, Authentication, Power, # beacons, # IV, LAN IP, ID-length, ESSID, Key\r\n" );
 
@@ -3783,93 +3783,93 @@ int dump_write_csv( void )
             continue;
         }
 
-        fprintf( G.f_txt, "%02X:%02X:%02X:%02X:%02X:%02X, ",
+        fprintf( G.f_ap_txt, "%02X:%02X:%02X:%02X:%02X:%02X, ",
                  ap_cur->bssid[0], ap_cur->bssid[1],
                  ap_cur->bssid[2], ap_cur->bssid[3],
                  ap_cur->bssid[4], ap_cur->bssid[5] );
 
         ltime = localtime( &ap_cur->tinit );
 
-        fprintf( G.f_txt, "%04d-%02d-%02d %02d:%02d:%02d, ",
+        fprintf( G.f_ap_txt, "%04d-%02d-%02d %02d:%02d:%02d, ",
                  1900 + ltime->tm_year, 1 + ltime->tm_mon,
                  ltime->tm_mday, ltime->tm_hour,
                  ltime->tm_min,  ltime->tm_sec );
 
         ltime = localtime( &ap_cur->tlast );
 
-        fprintf( G.f_txt, "%04d-%02d-%02d %02d:%02d:%02d, ",
+        fprintf( G.f_ap_txt, "%04d-%02d-%02d %02d:%02d:%02d, ",
                  1900 + ltime->tm_year, 1 + ltime->tm_mon,
                  ltime->tm_mday, ltime->tm_hour,
                  ltime->tm_min,  ltime->tm_sec );
 
-        fprintf( G.f_txt, "%2d, %3d,",
+        fprintf( G.f_ap_txt, "%2d, %3d,",
                  ap_cur->channel,
                  ap_cur->max_speed );
 
-        if( (ap_cur->security & (STD_OPN|STD_WEP|STD_WPA|STD_WPA2)) == 0) fprintf( G.f_txt, " " );
+        if( (ap_cur->security & (STD_OPN|STD_WEP|STD_WPA|STD_WPA2)) == 0) fprintf( G.f_ap_txt, " " );
         else
         {
-            if( ap_cur->security & STD_WPA2 ) fprintf( G.f_txt, " WPA2" );
-            if( ap_cur->security & STD_WPA  ) fprintf( G.f_txt, " WPA" );
-            if( ap_cur->security & STD_WEP  ) fprintf( G.f_txt, " WEP" );
-            if( ap_cur->security & STD_OPN  ) fprintf( G.f_txt, " OPN" );
+            if( ap_cur->security & STD_WPA2 ) fprintf( G.f_ap_txt, " WPA2" );
+            if( ap_cur->security & STD_WPA  ) fprintf( G.f_ap_txt, " WPA" );
+            if( ap_cur->security & STD_WEP  ) fprintf( G.f_ap_txt, " WEP" );
+            if( ap_cur->security & STD_OPN  ) fprintf( G.f_ap_txt, " OPN" );
         }
 
-        fprintf( G.f_txt, ",");
+        fprintf( G.f_ap_txt, ",");
 
-        if( (ap_cur->security & (ENC_WEP|ENC_TKIP|ENC_WRAP|ENC_CCMP|ENC_WEP104|ENC_WEP40)) == 0 ) fprintf( G.f_txt, " ");
+        if( (ap_cur->security & (ENC_WEP|ENC_TKIP|ENC_WRAP|ENC_CCMP|ENC_WEP104|ENC_WEP40)) == 0 ) fprintf( G.f_ap_txt, " ");
         else
         {
-            if( ap_cur->security & ENC_CCMP   ) fprintf( G.f_txt, " CCMP");
-            if( ap_cur->security & ENC_WRAP   ) fprintf( G.f_txt, " WRAP");
-            if( ap_cur->security & ENC_TKIP   ) fprintf( G.f_txt, " TKIP");
-            if( ap_cur->security & ENC_WEP104 ) fprintf( G.f_txt, " WEP104");
-            if( ap_cur->security & ENC_WEP40  ) fprintf( G.f_txt, " WEP40");
-            if( ap_cur->security & ENC_WEP    ) fprintf( G.f_txt, " WEP");
+            if( ap_cur->security & ENC_CCMP   ) fprintf( G.f_ap_txt, " CCMP");
+            if( ap_cur->security & ENC_WRAP   ) fprintf( G.f_ap_txt, " WRAP");
+            if( ap_cur->security & ENC_TKIP   ) fprintf( G.f_ap_txt, " TKIP");
+            if( ap_cur->security & ENC_WEP104 ) fprintf( G.f_ap_txt, " WEP104");
+            if( ap_cur->security & ENC_WEP40  ) fprintf( G.f_ap_txt, " WEP40");
+            if( ap_cur->security & ENC_WEP    ) fprintf( G.f_ap_txt, " WEP");
         }
 
-        fprintf( G.f_txt, ",");
+        fprintf( G.f_ap_txt, ",");
 
-        if( (ap_cur->security & (AUTH_OPN|AUTH_PSK|AUTH_MGT)) == 0 ) fprintf( G.f_txt, "   ");
+        if( (ap_cur->security & (AUTH_OPN|AUTH_PSK|AUTH_MGT)) == 0 ) fprintf( G.f_ap_txt, "   ");
         else
         {
-            if( ap_cur->security & AUTH_MGT   ) fprintf( G.f_txt, " MGT");
+            if( ap_cur->security & AUTH_MGT   ) fprintf( G.f_ap_txt, " MGT");
             if( ap_cur->security & AUTH_PSK   )
 			{
 				if( ap_cur->security & STD_WEP )
-					fprintf( G.f_txt, "SKA");
+					fprintf( G.f_ap_txt, "SKA");
 				else
-					fprintf( G.f_txt, "PSK");
+					fprintf( G.f_ap_txt, "PSK");
 			}
-            if( ap_cur->security & AUTH_OPN   ) fprintf( G.f_txt, " OPN");
+            if( ap_cur->security & AUTH_OPN   ) fprintf( G.f_ap_txt, " OPN");
         }
 
-        fprintf( G.f_txt, ", %3d, %8ld, %8ld, ",
+        fprintf( G.f_ap_txt, ", %3d, %8ld, %8ld, ",
                  ap_cur->avg_power,
                  ap_cur->nb_bcn,
                  ap_cur->nb_data );
 
-        fprintf( G.f_txt, "%3d.%3d.%3d.%3d, ",
+        fprintf( G.f_ap_txt, "%3d.%3d.%3d.%3d, ",
                  ap_cur->lanip[0], ap_cur->lanip[1],
                  ap_cur->lanip[2], ap_cur->lanip[3] );
 
-        fprintf( G.f_txt, "%3d, ", ap_cur->ssid_length);
+        fprintf( G.f_ap_txt, "%3d, ", ap_cur->ssid_length);
 
 	temp = format_text_for_csv(ap_cur->essid, ap_cur->ssid_length);
-        fprintf( G.f_txt, "%s, ", temp );
+        fprintf( G.f_ap_txt, "%s, ", temp );
 	free(temp);
 
         if(ap_cur->key != NULL)
         {
             for(i=0; i<(int)strlen(ap_cur->key); i++)
             {
-                fprintf( G.f_txt, "%02X", ap_cur->key[i]);
+                fprintf( G.f_ap_txt, "%02X", ap_cur->key[i]);
                 if(i<(int)(strlen(ap_cur->key)-1))
-                    fprintf( G.f_txt, ":");
+                    fprintf( G.f_ap_txt, ":");
             }
         }
 
-        fprintf( G.f_txt, "\r\n");
+        fprintf( G.f_ap_txt, "\r\n");
 
         ap_cur = ap_cur->next;
     }
@@ -7341,7 +7341,7 @@ usage:
         if ( G.output_format_kismet_csv) dump_write_kismet_csv();
         if ( G.output_format_kismet_netxml) dump_write_kismet_netxml();
 
-        if ( G. output_format_csv || G.f_txt != NULL ) fclose( G.f_txt );
+        if ( G. output_format_csv || G.f_txt != NULL ){ fclose( G.f_txt );fclose(G.f_ap_txt);}
         if ( G.output_format_kismet_csv || G.f_kis != NULL ) fclose( G.f_kis );
         if ( G.output_format_kismet_netxml || G.f_kis_xml != NULL )
         {
