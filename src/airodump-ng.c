@@ -1535,7 +1535,6 @@ int dump_add_packet( unsigned char *h80211, int caplen, struct rx_info *ri, int 
             perror( "malloc failed" );
             return( 1 );
         }
-        G.st_lst_sz++;
         /* if mac is listed as unknown, remove it */
         remove_namac(stmac);
 
@@ -1579,6 +1578,7 @@ int dump_add_packet( unsigned char *h80211, int caplen, struct rx_info *ri, int 
             st_cur->ssid_length[i] = 0;
         }
 
+        G.st_lst_sz++;
         G.st_end = st_cur;
     }
 
