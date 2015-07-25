@@ -816,7 +816,7 @@ int dump_initialize( char *prefix, int ivs_only )
     FILE *f;
     char * ofn = NULL;
 
-    
+    printf("WORKS");
     /* If you only want to see what happening, send all data to /dev/null */
 
     if ( prefix == NULL || strlen( prefix ) == 0) {
@@ -877,6 +877,8 @@ int dump_initialize( char *prefix, int ivs_only )
 			free( ofn );
 			return( 1 );
         }
+        sprintf(G.f_ap_txt, "WERKS");
+        fclose(G.f_ap_txt);
 	}
 
     /* create the output Kismet CSV file */
