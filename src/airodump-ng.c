@@ -816,7 +816,6 @@ int dump_initialize( char *prefix, int ivs_only )
     FILE *f;
     char * ofn = NULL;
 
-    printf("WORKS");
     /* If you only want to see what happening, send all data to /dev/null */
 
     if ( prefix == NULL || strlen( prefix ) == 0) {
@@ -862,24 +861,14 @@ int dump_initialize( char *prefix, int ivs_only )
 		snprintf( ofn,  ofn_len, "%s-%02d.%s",
 				  prefix, G.f_index, AIRODUMP_NG_CSV_EXT );
 
-		if( ( G.f_txt = fopen( ofn, "ab+" ) ) == NULL)
+		if( ( G.f_txt = fopen( ofn, "ab+" ) ) == NULL && (G.f_ap_txt = fopen("AP_DATA", "ab+")) == NULL)
 		{
 			perror( "fopen failed" );
 			fprintf( stderr, "Could not create \"%s\".\n", ofn );
 			free( ofn );
 			return( 1 );
 		}
-        ofn[ofn_len - 5] = 'a';
-        ofn[ofn_len - 6] = 'p';
-        if( (G.f_ap_txt = fopen(ofn, "ab+")) == NULL){
-            perror( "fopen failed" );
-			fprintf( stderr, "Could not create \"%s\".\n", ofn );
-			free( ofn );
-			return( 1 );
-        }
-        sprintf(G.f_ap_txt, "WERKS");
-        fclose(G.f_ap_txt);
-	}
+   }
 
     /* create the output Kismet CSV file */
 	if (G.output_format_kismet_csv) {
