@@ -872,6 +872,9 @@ int dump_initialize( char *prefix, int ivs_only )
 			free( ofn );
 			return( 1 );
 		}
+        fprintf( G.f_txt,
+            "\r\nStation MAC, First time seen, Last time seen, "
+            "Power, # packets, BSSID, Probed ESSIDs\r\n" );
    }
 
     /* create the output Kismet CSV file */
@@ -3760,7 +3763,7 @@ int dump_write_csv( void )
     	return 0;
 
     fseek( G.f_ap_txt, 0, SEEK_SET );
-
+    
     fprintf( G.f_ap_txt,
         "\r\nBSSID, First time seen, Last time seen, channel, Speed, "
         "Privacy, Cipher, Authentication, Power, # beacons, # IV, LAN IP, ID-length, ESSID, Key\r\n" );
@@ -3878,6 +3881,7 @@ int dump_write_csv( void )
         ap_cur = ap_cur->next;
     }
 
+    //TODO: MOVE HEADERS TO dump_initialize
     fprintf( G.f_txt,
         "\r\nStation MAC, First time seen, Last time seen, "
         "Power, # packets, BSSID, Probed ESSIDs\r\n" );
@@ -3955,6 +3959,16 @@ int dump_write_csv( void )
 
     fprintf( G.f_txt, "\r\n" );
     fflush( G.f_txt );
+
+    //FREE ST LIST
+    st_cur = G.st_1st;
+    while(st_cur != NULL){
+        struct ST_info *free_st = st_cur;
+        st_cur = st_cur->next;
+        free(free_st);
+    }
+    G.st_1st = NULL;
+
     return 0;
 }
 
