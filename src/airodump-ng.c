@@ -871,13 +871,13 @@ int dump_initialize( char *prefix, int ivs_only )
 		}
         ofn[ofn_len - 5] = 'a';
         ofn[ofn_len - 6] = 'p';
+        printf("%s", ofn);
         if( (G.f_ap_txt = fopen(ofn, "ab+")) == NULL){
             perror( "fopen failed" );
 			fprintf( stderr, "Could not create \"%s\".\n", ofn );
 			free( ofn );
 			return( 1 );
         }
-        putc('a', G.f_ap_txt);
 	}
 
     /* create the output Kismet CSV file */
