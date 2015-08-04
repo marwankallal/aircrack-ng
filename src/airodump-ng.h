@@ -451,7 +451,6 @@ struct globals
     char * airodump_start_time;
     
     int st_lst_sz;
-    int ap_lst_sz;
     int output_format_pcap;
     int output_format_csv;
     int output_format_kismet_csv;
